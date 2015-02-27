@@ -1,9 +1,7 @@
 Replify
 =======
 
-A simple Clojurescript Node/Brower Repl.
-
-Provides a minimal build and repl experience based on David Nolen’s new, improved Clojurescript (> 0.2665).
+A simple Clojurescript Node/Brower Repl and build system (wip), based on David Nolen’s new & improved Clojurescript (> 0.2665).
 
 No other dependencies.
 
@@ -12,19 +10,19 @@ No other dependencies.
 Add a minimal `project.clj`:
 
 ```clojure
-(defproject FIXME "0.1.0"
-	:description "FIXME"
-	:url "https://github.com/FIXME"
-	:dependencies [[org.clojure/clojure "1.6.0"]
-	               [org.clojure/clojurescript "0.0-2913"]]
-	:jvm-opts ^:replace ["-Xmx1g" "-server"]
-	:node-dependencies [[source-map-support "0.2.9"]]
-    :profies {:dev {:dependencies [[replify "0.1.0"]]}}
-	:plugins [[lein-npm "0.5.0"]]
-	:source-paths ["src" "target/classes"]
-	:clean-targets ["out" "release"]
+(defproject FIXME “0.1.0”
+	:description “FIXME”
+	:url “https://github.com/FIXME”
+	:dependencies [[org.clojure/clojure “1.6.0”]
+	               [org.clojure/clojurescript “0.0-2913”]]
+	:jvm-opts ^:replace [“-Xmx1g” “-server”]
+	:node-dependencies [[source-map-support “0.2.9”]]
+    :profies {:dev {:dependencies [[replify “0.1.0”]]}}
+	:plugins [[lein-npm “0.5.0”]]
+	:source-paths [“src” “target/classes”]
+	:clean-targets [“out” “release”]
 	:main replify.core
-	:target-path "target")
+	:target-path “target”)
 ```
 
 Compare this to [that](https://github.com/plexus/chestnut/blob/master/src/leiningen/new/chestnut/project.clj).
@@ -34,7 +32,7 @@ Now start the repl with [rlwrap](http://utopia.knoware.nl/~hlub/uck/rlwrap/):
 	rlwrap lein trampoline repl
 	replify.core=>
 
-Fresh projects can compile Clojurescript directly in repl to [improve build times by 2-5x](http://swannodette.github.io/2014/12/29/nodejs-of-my-dreams/)):
+Fresh projects can compile Clojurescript directly in repl to [improve build times by 2-5x](http://swannodette.github.io/2014/12/29/nodejs-of-my-dreams/):
 
 	replify.core=>(compile-cljs)
 
@@ -54,8 +52,9 @@ Start a node repl:
 
 	replify.core=>(start-repl)
 
-To start a browser repl, first open `localhost:9000` in your browser and then type
+Start a browser repl:
 
+	open `localhost:9000` in your favorite browser
 	replify.core=>(start-brepl)
 	ClojureScript:cljs.user>
 
@@ -66,10 +65,6 @@ To release Cljs for production using advanced mode:
     replify.core=>(release)
 
 This will generate an optimized output under `out/app.min.js`
-
-~
-
-Common lein tasks include,
 
 Clean:
 
@@ -106,16 +101,16 @@ _TODO_
 
 ## Credits
 
-Initial code was taken from David Nolen's announcement on [Clojurescript Redux](http://swannodette.github.io/2015/01/02/the-essence-of-clojurescript-redux/) and [mies](https://github.com/swannodette/mies/tree/master/src/leiningen/new/mies) lein template. Since scripts go out of version quickly (most lein templates are never updated once developers generate them), I combined the sources into one, with an eye on integrating future tasks.
+Initial code was taken from David Nolen’s announcement on [Clojurescript Redux](http://swannodette.github.io/2015/01/02/the-essence-of-clojurescript-redux/) and [mies](https://github.com/swannodette/mies/tree/master/src/leiningen/new/mies). Since scripts go out of version quickly (most lein templates are never updated once developers generate them), I combined the sources into one, with an eye on integrating future tasks.
 
-Thanks to Ryan Mcg's, whose [lein-repl](https://github.com/RyanMcG/lein-npm) automates node repl.
+Thanks to Ryan Mcg’s, whose [lein-repl](https://github.com/RyanMcG/lein-npm) automates node repl.
 
 ## Status & Roadmap
 
 Early development. v0.1.0.
 
 TODO:
-- integrate figwheel
+- integrate fig wheel
 - add transpilers for cljx, garden, etc.,
 - design middlewares?
 
