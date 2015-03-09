@@ -1,15 +1,20 @@
 Replify
 =======
 
-A simple Clojurescript Node/Browser repl and build system (wip), based on the new & improved Cljs > 0.2665.
+A simple Clojurescript Node/Browser repl and build system. No dependencies.
 
-No other dependencies.
+## Rationale
 
-[![Clojars Project](http://clojars.org/priyatam/replify/latest-version.svg)](http://clojars.org/priyatam/replify)
+According to [2014 State of Clojurescript](https://cognitect.wufoo.com/reports/state-of-clojurescript-2014-results/)
+survey, 97% of developers are targeting browser environment, yet _64%_ report difficulty in setting up a repl/brepl.
+_32% use a repl_ through a combination of outdated nrepl middlewares, stacked on top of each other, with nested leiningen maps.
+None of them use the [new](http://swannodette.github.io/2014/12/29/nodejs-of-my-dreams/), blazing [fast](http://swannodette.github.io/2015/01/02/the-essence-of-clojurescript-redux/), repls built into Clojurescript > v0.2650.
 
-## Setup
+Replify exposes these repls as plain functions.
 
-Add a minimal `project.clj`:
+## Quickstart
+
+Create a barebones leiningen project and add `project.clj`:
 
 ```clojure
 (defproject FIXME "0.1.0"
@@ -27,17 +32,14 @@ Add a minimal `project.clj`:
 	:target-path "target")
 ```
 
-Compare this to [that](https://github.com/plexus/chestnut/blob/master/src/leiningen/new/chestnut/project.clj).
+Open `localhost:9000` in your favorite browser, and start the repl
 
-Quickstart:
-
-	open `localhost:9000` in your favorite browser
 	rlwrap lein trampoline run
+	ClojureScript:cljs.user>
 	
-You should now see:	`ClojureScript:cljs.user>`
+What just happened? We compiled cljs compiler itself, fired an autobuild for your cljs src, and started a browser repl as [Evaluation Environment](https://github.com/clojure/clojurescript/wiki/The-REPL-and-Evaluation-Environments#browser-as-evaluation-environment).
 
-Congrats! You have now compiled cljs compiler source, started an autobuild for your cljs, and started a browser repl.
-For manually controlling each step, see tasks below.
+Compare this to [that](https://github.com/plexus/chestnut/blob/master/src/leiningen/new/chestnut/project.clj).
 
 ## Tasks
 
@@ -80,22 +82,23 @@ Add source map support in Node REPL:
 
 	lein npm install
 
-## Editor Support
+## Editors
 
 ### Emacs/Cider
-
-Cider has an outstanding [issue](https://github.com/clojure-emacs/cider/issues/939) and hangs intermittently. Here is how it works:
 
 After `cider-jack-in`, run `(build)` and `(start-repl)` or `(start-brepl)`.
 
 You should see:
 
-	Starting Node REPL ... OR Started browser Repl (in the browser console)
+	Starting Node REPL ...
+	OR Started browser Repl (in the browser console)
 	To quit, type: :cljs/quit
 
 Open any cljs source in your project and evaluate: `C-c C-k`. You should see this in the repl:
 
 	ClojureScript:cljs.user>
+
+NOTE: Cider has an outstanding [issue](https://github.com/clojure-emacs/cider/issues/939) and hangs intermittently.
 
 ### Lighttable
 
@@ -103,23 +106,18 @@ _TODO_
 
 ## Credits
 
-Initial code was taken from David Nolen’s announcement on [Clojurescript Redux](http://swannodette.github.io/2015/01/02/the-essence-of-clojurescript-redux/) and [mies](https://github.com/swannodette/mies/tree/master/src/leiningen/new/mies). Since scripts can go out of version (most lein templates are never updated once developers generate them), I combined the sources into one, with an eye on integrating future tasks.
-
-Thanks to Ryan Mcg's [lein-repl](https://github.com/RyanMcG/lein-npm).
+Initial code was taken from David Nolen’s [mies](https://github.com/swannodette/mies/tree/master/src/leiningen/new/mies).
+Since scripts can go out of version (most lein templates are never updated once developers generate them), I combined the
+sources into one, with an eye on integrating future tasks.
 
 ## Status & Roadmap
 
-Early development. v0.1.0.
+[![Clojars Project](http://clojars.org/priyatam/replify/latest-version.svg)](http://clojars.org/priyatam/replify)
 
 TODO:
-- integrate figwheel
-- add transpilers for cljx, garden, etc.,
 
-## References
-
-- [NodeJs Repl of my dreams](http://swannodette.github.io/2014/12/29/nodejs-of-my-dreams/)
-- [Browser as Evaluation Environment](https://github.com/clojure/clojurescript/wiki/The-REPL-and-Evaluation-Environments#browser-as-evaluation-environment).
-- [Google Closure Modules](http://swannodette.github.io/2015/02/23/hello-google-closure-modules/)
+- Integrate figwheel
+- Add transpilers for cljx, garden, etc.,
 
 ## License
 
