@@ -5,6 +5,8 @@ A simple Clojurescript Node/Browser repl and build system (wip), based on the ne
 
 No other dependencies.
 
+[![Clojars Project](http://clojars.org/priyatam/replify/latest-version.svg)](http://clojars.org/priyatam/replify)
+
 ## Setup
 
 Add a minimal `project.clj`:
