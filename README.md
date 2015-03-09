@@ -1,7 +1,7 @@
 Replify
 =======
 
-A simple Clojurescript Node/Brower Repl and build system (wip), based on David Nolen’s new & improved Clojurescript (> 0.2665).
+A simple Clojurescript Node/Browser repl and build system (wip), based on the new & improved Cljs > 0.2665.
 
 No other dependencies.
 
@@ -10,61 +10,65 @@ No other dependencies.
 Add a minimal `project.clj`:
 
 ```clojure
-(defproject FIXME “0.1.0”
-	:description “FIXME”
-	:url “https://github.com/FIXME”
-	:dependencies [[org.clojure/clojure “1.6.0”]
-	               [org.clojure/clojurescript “0.0-2913”]]
-	:jvm-opts ^:replace [“-Xmx1g” “-server”]
-	:node-dependencies [[source-map-support “0.2.9”]]
-    :profies {:dev {:dependencies [[replify “0.1.0”]]}}
-	:plugins [[lein-npm “0.5.0”]]
-	:source-paths [“src” “target/classes”]
-	:clean-targets [“out” “release”]
+(defproject FIXME "0.1.0"
+	:description "FIXME"
+	:url "https://github.com/FIXME"
+	:dependencies [[org.clojure/clojure "1.6.0"]
+	               [org.clojure/clojurescript "0.0-2913"]
+	               [priyatam/replify "0.1.0"]]
+	:jvm-opts ^:replace ["-Xmx1g" "-server"]
+	:node-dependencies [[source-map-support "0.2.9"]]
+  	:plugins [[lein-npm "0.5.0"]]
+	:source-paths ["src" "target/classes"]
+	:clean-targets ["out" "release"]
 	:main replify.core
-	:target-path “target”)
+	:target-path "target")
 ```
 
 Compare this to [that](https://github.com/plexus/chestnut/blob/master/src/leiningen/new/chestnut/project.clj).
 
-Now start the repl with [rlwrap](http://utopia.knoware.nl/~hlub/uck/rlwrap/):
+Quickstart:
+
+	open `localhost:9000` in your favorite browser
+	rlwrap lein trampoline run
+	
+You should now see:	`ClojureScript:cljs.user>`
+
+Congrats! You have now compiled cljs compiler source, started an autobuild for your cljs, and started a browser repl.
+For manually controlling each step, see tasks below.
+
+## Tasks
+
+Tasks are just functions you invoke on repl. Open another console and run tasks like so:
 
 	rlwrap lein trampoline repl
 	replify.core=>
 
-Fresh projects can compile Clojurescript directly in repl to [improve build times by 2-5x](http://swannodette.github.io/2014/12/29/nodejs-of-my-dreams/):
+Compile Clojurescript directly in repl to [improve build times by 2-5x](http://swannodette.github.io/2014/12/29/nodejs-of-my-dreams/):
 
-	replify.core=>(compile-cljs)
+	(compile-cljs)
 
-## Tasks
+Build Cljs source and _watch_ for changes:
 
-Tasks are just functions. No lein config and plugins required to master.
-
-Build Cljs source and _watch for changes_:
-
-	replify.core=>(build)
+	(build)
 
 Build once:
 
-	replify.core=>(build {:watch? false})
+	(build {:watch? false})
 
 Start a node repl:
 
-	replify.core=>(start-repl)
+	(start-repl)
 
 Start a browser repl:
 
 	open `localhost:9000` in your favorite browser
-	replify.core=>(start-brepl)
+	(start-brepl)
 	ClojureScript:cljs.user>
 
-You can now evaluate ClojureScript statements in the browser context.
+Release Cljs for production using advanced mode (`out/app.min.js`):
 
-To release Cljs for production using advanced mode:
-
-    replify.core=>(release)
-
-This will generate an optimized output under `out/app.min.js`
+	(release)
 
 Clean:
 
@@ -78,22 +82,18 @@ Add source map support in Node REPL:
 
 ### Emacs/Cider
 
-Cider has an outstanding [issue](https://github.com/clojure-emacs/cider/issues/939) and hangs intermittently. Here is how it works roughly:
+Cider has an outstanding [issue](https://github.com/clojure-emacs/cider/issues/939) and hangs intermittently. Here is how it works:
 
-After `cider-jack-in`, run `(build)` and `(start-repl)`.
+After `cider-jack-in`, run `(build)` and `(start-repl)` or `(start-brepl)`.
 
 You should see:
 
-	Starting Node REPL ...
+	Starting Node REPL ... OR Started browser Repl (in the browser console)
 	To quit, type: :cljs/quit
 
-Open any cljs source and evaluate `C-c C-k`; You should see this in the repl:
+Open any cljs source in your project and evaluate: `C-c C-k`. You should see this in the repl:
 
 	ClojureScript:cljs.user>
-
-You can now evaluate Cljs code without a Browser.
-
-For a browser repl follow the same steps but run `(start-brepl)`
 
 ### Lighttable
 
@@ -101,18 +101,17 @@ _TODO_
 
 ## Credits
 
-Initial code was taken from David Nolen’s announcement on [Clojurescript Redux](http://swannodette.github.io/2015/01/02/the-essence-of-clojurescript-redux/) and [mies](https://github.com/swannodette/mies/tree/master/src/leiningen/new/mies). Since scripts go out of version quickly (most lein templates are never updated once developers generate them), I combined the sources into one, with an eye on integrating future tasks.
+Initial code was taken from David Nolen’s announcement on [Clojurescript Redux](http://swannodette.github.io/2015/01/02/the-essence-of-clojurescript-redux/) and [mies](https://github.com/swannodette/mies/tree/master/src/leiningen/new/mies). Since scripts can go out of version (most lein templates are never updated once developers generate them), I combined the sources into one, with an eye on integrating future tasks.
 
-Thanks to Ryan Mcg’s, whose [lein-repl](https://github.com/RyanMcG/lein-npm) automates node repl.
+Thanks to Ryan Mcg's [lein-repl](https://github.com/RyanMcG/lein-npm).
 
 ## Status & Roadmap
 
 Early development. v0.1.0.
 
 TODO:
-- integrate fig wheel
+- integrate figwheel
 - add transpilers for cljx, garden, etc.,
-- design middlewares?
 
 ## References
 

@@ -69,7 +69,8 @@
                :cache-analysis true
                :source-map true}))
 
-(defn start [& options]
+(defn -main [& options]
   (println "Starting repl")
+  (compile-cljs)
   (build)
-  (start-repl))
+  (start-brepl))
