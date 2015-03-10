@@ -1,20 +1,24 @@
 Replify
 =======
 
-A simple Clojurescript Node/Browser repl and build system. No dependencies.
+A simple Clojurescript Node/Browser repl and build system. No dependencies, no config.
 
 ## Rationale
 
 According to [2014 State of Clojurescript](https://cognitect.wufoo.com/reports/state-of-clojurescript-2014-results/)
-survey, 97% of developers are targeting browser environment, yet _64%_ report difficulty in setting up a repl/brepl.
-_32% use a repl_ through a combination of outdated nrepl middlewares, stacked on top of each other, with nested leiningen maps.
-None of them use the [new](http://swannodette.github.io/2014/12/29/nodejs-of-my-dreams/), blazing [fast](http://swannodette.github.io/2015/01/02/the-essence-of-clojurescript-redux/), repls built into Clojurescript > v0.2650.
+survey, 97% of developers are targeting browser environment, yet 64% report difficulty in setting up a repl/brepl.
+32% use a repl through a combination of outdated nrepl middlewares, stacked together, with nested leiningen maps.
+None of them use the [new](http://swannodette.github.io/2014/12/29/nodejs-of-my-dreams/), blazing [fast](http://swannodette.github.io/2015/01/02/the-essence-of-clojurescript-redux/), repls built into Clojurescript since v0.2650.
 
 Replify exposes these repls as plain functions.
 
 ## Quickstart
 
-Create a barebones leiningen project and add `project.clj`:
+Create a barebones lein project:
+
+	lein new hello
+
+Update `project.clj`:
 
 ```clojure
 (defproject FIXME "0.1.0"
@@ -32,20 +36,29 @@ Create a barebones leiningen project and add `project.clj`:
 	:target-path "target")
 ```
 
-Open `localhost:9000` in your favorite browser, and start the repl
+Add an `index.html` in the project root.
+
+	<html>
+    <body>
+        <script src="out/app.js" type="text/javascript"></script>
+    </body>
+	</html>
+
+Open `localhost:9000` in your favorite browser and start the repl
 
 	rlwrap lein trampoline run
 	ClojureScript:cljs.user>
 	
-What just happened? We compiled cljs compiler itself, fired an autobuild for your cljs src, and started a browser repl as [Evaluation Environment](https://github.com/clojure/clojurescript/wiki/The-REPL-and-Evaluation-Environments#browser-as-evaluation-environment).
+What just happened?
 
-Compare this to [that](https://github.com/plexus/chestnut/blob/master/src/leiningen/new/chestnut/project.clj).
+We compiled cljs compiler first, then fired an autobuild for your cljs src, and started a browser repl as [Evaluation Environment](https://github.com/clojure/clojurescript/wiki/The-REPL-and-Evaluation-Environments#browser-as-evaluation-environment). Compare this to [that](https://github.com/plexus/chestnut/blob/master/src/leiningen/new/chestnut/project.clj).
 
 ## Tasks
 
-Tasks are just functions you invoke on repl. Open another console and run tasks like so:
+Tasks are functions you can invoke on repl. Open another console and run tasks like so:
 
 	rlwrap lein trampoline repl
+
 	replify.core=>
 
 Compile Clojurescript directly in repl to [improve build times by 2-5x](http://swannodette.github.io/2014/12/29/nodejs-of-my-dreams/):
@@ -110,14 +123,9 @@ Initial code was taken from David Nolen’s [mies](https://github.com/swannodett
 Since scripts can go out of version (most lein templates are never updated once developers generate them), I combined the
 sources into one, with an eye on integrating future tasks.
 
-## Status & Roadmap
+## Status
 
 [![Clojars Project](http://clojars.org/priyatam/replify/latest-version.svg)](http://clojars.org/priyatam/replify)
-
-TODO:
-
-- Integrate figwheel
-- Add transpilers for cljx, garden, etc.,
 
 ## License
 
