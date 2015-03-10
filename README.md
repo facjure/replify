@@ -69,27 +69,6 @@ Add source map support in Node REPL:
 
 	lein npm install
 
-## Editors
-
-### Emacs/Cider
-
-After `cider-jack-in`, run `(build)` and `(start-brepl)`.
-
-You should see:
-
-	Started browser Repl (in the browser console)
-	To quit, type: :cljs/quit
-
-Open any cljs source in your project and evaluate: `C-c C-k`. You should see this in the repl:
-
-	ClojureScript:cljs.user>
-
-NOTE: Cider has an outstanding [issue](https://github.com/clojure-emacs/cider/issues/939) and hangs intermittently.
-
-### Lighttable
-
-_TODO_
-
 ## Credits
 
 Initial code was taken from David Nolen’s [mies](https://github.com/swannodette/mies/tree/master/src/leiningen/new/mies).
