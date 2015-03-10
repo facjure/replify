@@ -1,10 +1,11 @@
 pom.xml
 pom.xml.asc
 *jar
-/out/
+/**/out/
 /lib/
+/**/node_modules
 /classes/
-/target/
+/**/target/
 /checkouts/
 .lein-*
 .nrepl*

@@ -7,7 +7,7 @@ A simple Clojurescript Node/Browser repl and build system. No dependencies, no c
 
 According to [2014 State of Clojurescript](https://cognitect.wufoo.com/reports/state-of-clojurescript-2014-results/)
 survey, 97% of developers are targeting browser environment, yet 64% report difficulty in setting up a repl/brepl.
-32% use a repl through a combination of outdated nrepl middlewares, stacked together, with nested leiningen maps.
+32% use a repl through a combination of outdated nrepl middlewares, stacked together with nested leiningen maps.
 None of them use the [new](http://swannodette.github.io/2014/12/29/nodejs-of-my-dreams/), blazing [fast](http://swannodette.github.io/2015/01/02/the-essence-of-clojurescript-redux/), repls built into Clojurescript since v0.2650.
 
 Replify exposes these repls as plain functions.
@@ -36,60 +36,34 @@ Update `project.clj`:
 	:target-path "target")
 ```
 
-Add an `index.html` in the project root.
-
-	<html>
-    <body>
-        <script src="out/app.js" type="text/javascript"></script>
-    </body>
-	</html>
-
 Open `localhost:9000` in your favorite browser and start the repl
 
 	rlwrap lein trampoline run
 	ClojureScript:cljs.user>
 	
-What just happened?
+What just happened? We first compiled cljs compiler to [improve build times by 2-5x](http://swannodette.github.io/2014/12/29/nodejs-of-my-dreams/), then fired an autobuild for cljs src, followed by a browser repl as [Evaluation Environment](https://github.com/clojure/clojurescript/wiki/The-REPL-and-Evaluation-Environments#browser-as-evaluation-environment).
 
-We compiled cljs compiler first, then fired an autobuild for your cljs src, and started a browser repl as [Evaluation Environment](https://github.com/clojure/clojurescript/wiki/The-REPL-and-Evaluation-Environments#browser-as-evaluation-environment). Compare this to [that](https://github.com/plexus/chestnut/blob/master/src/leiningen/new/chestnut/project.clj).
+Compare this to [that](https://github.com/plexus/chestnut/blob/master/src/leiningen/new/chestnut/project.clj).
+
+See `example` project for more info.
 
 ## Tasks
 
 Tasks are functions you can invoke on repl. Open another console and run tasks like so:
 
 	rlwrap lein trampoline repl
-
 	replify.core=>
 
-Compile Clojurescript directly in repl to [improve build times by 2-5x](http://swannodette.github.io/2014/12/29/nodejs-of-my-dreams/):
+Available Tasks:
 
 	(compile-cljs)
-
-Build Cljs source and _watch_ for changes:
-
 	(build)
-
-Build once:
-
 	(build {:watch? false})
-
-Start a node repl:
-
 	(start-repl)
-
-Start a browser repl:
-
-	open `localhost:9000` in your favorite browser
 	(start-brepl)
-	ClojureScript:cljs.user>
-
-Release Cljs for production using advanced mode (`out/app.min.js`):
-
 	(release)
 
-Clean:
-
-	lein clean
+Note that `(start-brepl)` should always be run after opening the browser at  `localhost:9000`.
 
 Add source map support in Node REPL:
 
@@ -99,12 +73,11 @@ Add source map support in Node REPL:
 
 ### Emacs/Cider
 
-After `cider-jack-in`, run `(build)` and `(start-repl)` or `(start-brepl)`.
+After `cider-jack-in`, run `(build)` and `(start-brepl)`.
 
 You should see:
 
-	Starting Node REPL ...
-	OR Started browser Repl (in the browser console)
+	Started browser Repl (in the browser console)
 	To quit, type: :cljs/quit
 
 Open any cljs source in your project and evaluate: `C-c C-k`. You should see this in the repl:
