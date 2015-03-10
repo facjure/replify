@@ -8,5 +8,4 @@
   :plugins [[lein-npm "0.5.0"]]
   :source-paths ["src" "target/classes"]
   :clean-targets ["out" "release"]
-  :main replify.core
   :target-path "target")
