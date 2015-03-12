@@ -6,12 +6,14 @@
   (:gen-class))
 
 (defn compile-cljs []
+  "Compile Clojurescript compiler for fast src compilations"
   (do
     (compile 'cljs.repl.node)
     (compile 'cljs.repl.browser)
     (compile 'cljs.core)))
 
 (defn watch [& options]
+  "Watch for Src Cljs changes"
   (println "Watching for changes ...")
   (cljsc/watch "src"
                {:main 'replify.core
@@ -23,7 +25,7 @@
 
 (defn build
   ([{:keys [watch?] :as options}]
-   "Build with options"
+   "Build Cljs src with options"
    (println "Building 'Dev' and watching for changes ...")
    (let [start (System/nanoTime)]
      (cljsc/build "src"
@@ -38,10 +40,11 @@
        (future
          (watch)))))
   ([]
-   "Default build = build with watch"
+   "Build Cljs source and watch by default"
    (build {:watch? true})))
 
 (defn release [& options]
+  "Release Cljs src for production (advanced compilation)"
   (println "Building 'Release' ...")
   (let [start (System/nanoTime)]
     (cljsc/build "src"
@@ -51,7 +54,8 @@
                   :verbose true})
     (println "... done. Elapsed" (/ (- (System/nanoTime) start) 1e9) "seconds")))
 
-(defn start-repl [& options]
+(defn start-node-repl [& options]
+  "Start a Node Repl"
   (println "Starting Node REPL ...")
   (repl/repl* (node/repl-env)
               {:watch "src"
@@ -70,6 +74,7 @@
                :source-map true}))
 
 (defn -main [& options]
+  "If invoked on a command line, compile cljs and start a brepl"
   (println "Starting repl")
   (compile-cljs)
   (build)
