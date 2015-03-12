@@ -2,6 +2,9 @@
   (:require [clojure.browser.repl :as repl]))
 
 ;; Automatically start brepl after compilation of cljs
+(defonce conn
+  (repl/connect "http://localhost:9000/repl"))
 
-(repl/connect (str "http://localhost:9000/repl"))
-(.log js/console "Started browser Repl")
+(enable-console-print!)
+
+(println "Started browser Repl")
