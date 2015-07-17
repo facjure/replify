@@ -45,7 +45,7 @@ Update `project.clj`:
 ```
 
 Open `localhost:9000` in your favorite browser and start the repl, passing the
-main namespace
+main namespace (say, `hello.core`)
 
 	rlwrap lein trampoline run hello.core
 	ClojureScript:cljs.user>
@@ -54,8 +54,7 @@ What just happened?
 
 We first compiled cljs compiler to
 [improve build times by 2-5x](http://swannodette.github.io/2014/12/29/nodejs-of-my-dreams/),
-then fired an autobuild for cljs src, followed by a browser repl as
-[Evaluation Environment](https://github.com/clojure/clojurescript/wiki/The-REPL-and-Evaluation-Environments#browser-as-evaluation-environment).
+then fired an autobuild for cljs src, followed by a node repl.
 
 Compare this to [that](https://github.com/plexus/chestnut/blob/master/src/leiningen/new/chestnut/project.clj).
 
@@ -66,12 +65,12 @@ See `example` project for more info.
 Tasks are functions you can invoke on repl. Available Tasks:
 
 	(compile-cljs)
-	(build {:main 'myapp.core})
+	(build 'hello.core)
 	(start-node-repl)
 	(start-brepl)
-	(release)
+	(release 'hello.core)
 
-Note that `(start-brepl)` should always be run after opening the browser at `localhost:9000`.
+Note that `(start-brepl)` should always be run after opening the browser at `localhost:9000`. Read [evaluation environment](https://github.com/clojure/clojurescript/wiki/The-REPL-and-Evaluation-Environments#browser-as-evaluation-environment) for info on how brepl works.
 
 Add source map support in Node REPL:
 
