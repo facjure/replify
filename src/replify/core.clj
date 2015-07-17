@@ -44,8 +44,8 @@
   (println "Building 'Release' ...")
   (let [start (System/nanoTime)]
     (b/build "src"
-             {:output-to "out/app.min.js"
-              :output-dir "release"
+             {:output-to "dis/app.min.js"
+              :output-dir "target"
               :optimizations :advanced
               :verbose true})
     (println "... done. Elapsed" (/ (- (System/nanoTime) start) 1e9) "seconds")))
