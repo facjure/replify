@@ -1,6 +1,4 @@
-(ns hello.core
-  (:require [replify.core :as repl]))
+(ns hello.core)
 
 (defn greet [name]
   (println (str "Hello " name)))
-
