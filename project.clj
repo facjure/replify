@@ -1,4 +1,4 @@
-(defproject priyatam/replify "0.2.0"
+(defproject priyatam/replify "0.2.1"
   :description "A minimalist Clojurescript repl and build system"
   :url "https://github.com/priyatam/replify"
   :dependencies [[org.clojure/clojure "1.7.0"]

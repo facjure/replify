@@ -2,17 +2,18 @@
   (:require [cljs.build.api :as b]
             [cljs.repl :as repl]
             [cljs.repl.node :as node]
-            [cljs.repl.browser :as browser])
+            [cljs.repl.browser :as browser]
+            [cljs.repl.rhino :as rhino])
   (:gen-class))
 
-(defn compile-cljs []
-  "Compile Cljs compiler for faster src compilations"
+(defonce compile-cljs
+  ^{:doc "Compile Cljs compiler for faster src compilations"}
   (do
     (compile 'cljs.repl.node)
     (compile 'cljs.repl.browser)
     (compile 'cljs.core)))
 
-(defn watch [{:keys [main] :as options}]
+(defn watch [main & options]
   "Watch for Cljs src changes"
   (println "Watching for changes ...")
   (b/watch "src"
@@ -24,10 +25,11 @@
             :source-map true}))
 
 (defn build
-  ([{:keys [main] :as options}]
+  ([main & options]
    "Build Cljs src with options"
    (println "Building 'Dev' and watching for changes ...")
    (let [start (System/nanoTime)]
+     (println "setting main as: " main)
      (b/build "src"
               {:main main
                :output-to "target/app.js"
@@ -37,14 +39,14 @@
                :verbose true})
      (println "... done. Elapsed" (/ (- (System/nanoTime) start) 1e9) "seconds")
      (future
-       (watch {:main main})))))
+       (watch main)))))
 
 (defn release [& options]
   "Release Cljs src for production (advanced compilation)"
   (println "Building 'Release' ...")
   (let [start (System/nanoTime)]
     (b/build "src"
-             {:output-to "dis/app.min.js"
+             {:output-to "dist/app.min.js"
               :output-dir "target"
               :optimizations :advanced
               :verbose true})
@@ -54,23 +56,30 @@
   "Start a Node Repl"
   (println "Starting Node REPL ...")
   (repl/repl* (node/repl-env)
-              {:watch "src"
-               :output-dir "target"
+              {:output-dir "target"
+               :optimizations :none
+               :cache-analysis true
+               :source-map true}))
+
+(defn start-rhino-repl [& options]
+  "Start a Rhino Repl"
+  (println "Starting Rhino REPL ...")
+  (repl/repl* (node/repl-env)
+              {:output-dir "target"
                :optimizations :none
                :cache-analysis true
                :source-map true}))
 
 (defn start-brepl [& options]
   (println "Starting Browser REPL ...")
-  (repl/repl* (browser/repl-env)
-              {:watch "src"
-               :output-dir "target"
+  (repl/repl* (rhino/repl-env)
+              {:output-dir "target"
                :optimizations :none
                :cache-analysis true
                :source-map true}))
 
 (defn -main [args]
-  "If invoked on a command line, compile cljs and start a brepl"
+  "If invoked on the CLI, compile cljs and start a node repl"
   (compile-cljs)
   (build args)
   (start-node-repl))
