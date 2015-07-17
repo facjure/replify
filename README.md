@@ -39,6 +39,7 @@ Update `project.clj`:
   	:plugins [[lein-npm "0.5.0"]]
 	:source-paths ["src" "target/classes"]
 	:clean-targets ["out" "release"]
+	:profiles {:dev {:dependencies [[priyatam/replify "0.2.0"]]}}
 	:main replify.core
 	:target-path "target")
 ```
