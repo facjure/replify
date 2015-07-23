@@ -1,8 +1,8 @@
 pom.xml
 pom.xml.asc
-*jar
 /**/out/
 /lib/
+/example/lib/*.jar
 /**/node_modules
 /classes/
 /**/target/
