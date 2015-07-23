@@ -3,7 +3,8 @@
             [cljs.repl :as repl]
             [cljs.repl.node :as node]
             [cljs.repl.browser :as browser]
-            [cljs.repl.rhino :as rhino])
+            [cljs.repl.rhino :as rhino]
+            [alembic.still :as still])
   (:gen-class))
 
 (defn compile-cljs
@@ -82,6 +83,9 @@
                :optimizations :none
                :cache-analysis true
                :source-map true}))
+
+(defn add-deps [deps]
+  (alembic.still/distill deps))
 
 (defn -main
   "If invoked on the CLI, compile cljs and start a node repl"
