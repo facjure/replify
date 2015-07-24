@@ -10,4 +10,5 @@
   :source-paths ["src" "target/classes"]
   :clean-targets ["target" "dist"]
   :target-path "target"
+  :profiles {:dev {:dependencies [[org.clojure/tools.nrepl "0.2.10"]]}}
   :uberjar-name "replify.jar")
