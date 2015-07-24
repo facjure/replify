@@ -1,9 +1,9 @@
 Replify
 =======
 
-A _fast_, standalone Clojurescript REPL with a minimalist build tool. Aimed at
-rapid prototyping without leaving the REPL.
-
+A _fast_ Clojurescript REPL with a minimalist build tool. Available as a standalone
+jar for rapid prototyping without leaving the REPL.
+	
 ## Rationale
 
 According to 2014
@@ -19,7 +19,7 @@ repls built into Clojurescript.
 
 Replify exposes built-in Cljs repls (**Browser**, **Rhino**,
 **Nashorn**, and **Node**) with a minimal workflow, and runtime classpath
-and dependency management via (alembic)[https://github.com/pallet/alembic].
+and dependency management via [alembic[(https://github.com/pallet/alembic).
 
 ## Quickstart
 
@@ -64,16 +64,9 @@ Start a Clojure REPL (to run replify tasks)
 
 ## Tasks
 
-Build and Watch the 'src' directory
-
 ```clojure
 user=> (build 'foobar.core)
 user=> (build-for-node 'foobar.core)
-```
-	
-Choose a target environment and fire a Cljs REPL
-
-```
 user=> (start-node-repl)
 Starting Node REPL ...
 ClojureScript Node.js REPL server listening on 54240
@@ -86,10 +79,15 @@ user=> (start-brepl)
 Starting Browser REPL ...
 Compiling client jsFor a browser repl,  ...
 Waiting for browser to connect ...
-...
+
+user=>(add-deps '[org.omcljs/om "0.9.0"])
+user=>(add-deps '[[org.omcljs/om "0.9.0"] [sablono "0.3.4"] [facjure/mesh "0.3.0"]])
+Loaded dependencies:
+
+user=> (release 'hello.core)
 ```
 
-Create an index.html at the root, and include `(:require [replify.core :as repl])` in your main source file. Refresh browser for brepl to connect to browser
+Note on Browser REPL: Create an index.html at the project root and include `(:require [replify.core :as repl])` in your main source file.
 
 ```html
 <html>
@@ -100,25 +98,9 @@ Create an index.html at the root, and include `(:require [replify.core :as repl]
 </html>
 ```
 
-Add a dependency (ies)
+Refresh browser for brepl to connect to browser at `localhost:9000`.
 
-```clojure
-user=>(add-deps '[org.omcljs/om "0.9.0"])
-user=>(add-deps '[[org.omcljs/om "0.9.0"] [sablono "0.3.4"] [facjure/mesh "0.3.0"]])
-Loaded dependencies:
-...
-```
-
-Release (with advanced optimizations)
-
-```clojure
-	user=> (release 'hello.core)
-```
-	
-Note that `(start-brepl)` should always be run after opening the browser at
-`localhost:9000`.
-
-Read [evaluation environment](https://github.com/clojure/clojurescript/wiki/The-REPL-and-Evaluation-Environments#browser-as-evaluation-environment) for more info.
+For more info, read [evaluation environment](https://github.com/clojure/clojurescript/wiki/The-REPL-and-Evaluation-Environments#browser-as-evaluation-environment).
 
 ## Next Steps
 
@@ -139,3 +121,4 @@ use [Figwheel](https://github.com/bhauman/lein-figwheel) or
 Copyright © 2015, Priyatam Mudivarti.
 
 Distributed under the Eclipse Public License either version 1.0 or (at your option) any later version.
+	
