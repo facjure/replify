@@ -11,9 +11,9 @@
   "Compile Cljs compiler for faster src compilations"
   []
   (do
+    (compile 'cljs.core)
     (compile 'cljs.repl.node)
-    (compile 'cljs.repl.browser)
-    (compile 'cljs.core)))
+    (compile 'cljs.repl.browser)))
 
 (defn watch
   "Watch for Cljs src changes"
@@ -30,7 +30,7 @@
 (defn build
   ([main & options]
    "Build Cljs src with options"
-   (println "Building 'Dev' and watching for changes ...")
+   (println "Building Cljs and watching for changes ...")
    (let [start (System/nanoTime)]
      (println "setting main as: " main)
      (b/build "src"
@@ -40,6 +40,20 @@
                :optimizations :none
                :source-map true
                :verbose true})
+     (println "... done. Elapsed" (/ (- (System/nanoTime) start) 1e9) "seconds")
+     (future
+       (watch main)))))
+
+(defn build-for-node
+  ([main & options]
+   "Build Cljs src for Nodejs with options"
+   (println "Building Cljs for Node and watching for changes ...")
+   (let [start (System/nanoTime)]
+     (println "setting main as: " main)
+     (b/build "src"
+              {:main main
+               :output-to "app.js"
+               :target :nodejs})
      (println "... done. Elapsed" (/ (- (System/nanoTime) start) 1e9) "seconds")
      (future
        (watch main)))))
@@ -61,20 +75,19 @@
   [& options]
   (println "Starting Node REPL ...")
   (repl/repl* (node/repl-env)
-              {:output-dir "target"
-               :optimizations :none
-               :cache-analysis true
-               :source-map true}))
+              {:watch "src"
+               :output-dir "target"}))
 
 (defn start-rhino-repl
   "Start a Rhino Repl"
   [& options]
   (println "Starting Rhino REPL ...")
   (repl/repl* (rhino/repl-env)
-              {:output-dir "target"
-               :optimizations :none
-               :cache-analysis true
-               :source-map true}))
+             {:watch "src"
+              :output-dir "target"
+              :optimizations :none
+              :cache-analysis true
+              :source-map true}))
 
 (defn start-brepl [& options]
   (println "Starting Browser REPL ...")

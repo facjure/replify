@@ -1,4 +1,4 @@
-(ns replify.core
+(ns replify.browser
   (:require [clojure.browser.repl :as repl]))
 
 ;; Automatically start brepl after compilation of cljs

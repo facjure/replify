@@ -8,6 +8,6 @@
   :node-dependencies [[source-map-support "0.3.1"]]
   :plugins [[lein-npm "0.5.0"]]
   :source-paths ["src" "target/classes"]
-  :clean-targets ["out" "release"]
+  :clean-targets ["target" "dist"]
   :target-path "target"
   :uberjar-name "replify.jar")
