@@ -10,7 +10,7 @@
            (java.net URL URLClassLoader))
   (:gen-class))
 
-(defn compile-cljs-source
+(defn compile-cljs-src
   "Compile Cljs compiler for faster src compilations"
   []
   (do
@@ -24,8 +24,8 @@
   (println "Watching for changes ...")
   (b/watch "src"
            {:main main
-            :output-to "target/app.js"
-            :output-dir "target"
+            :output-to "out/app.js"
+            :output-dir "out"
             :optimizations :none
             :cache-analysis true
             :source-map true}))
@@ -38,8 +38,8 @@
      (println "setting main as: " main)
      (b/build "src"
               {:main main
-               :output-to "target/app.js"
-               :output-dir "target"
+               :output-to "out/app.js"
+               :output-dir "out"
                :optimizations :none
                :source-map true
                :verbose true})
@@ -55,11 +55,9 @@
      (println "setting main as: " main)
      (b/build "src"
               {:main main
-               :output-to "target/app-node.js"
+               :output-to "main.js"
                :target :nodejs})
-     (println "... done. Elapsed" (/ (- (System/nanoTime) start) 1e9) "seconds")
-     (future
-       (watch main)))))
+     (println "... done. Elapsed" (/ (- (System/nanoTime) start) 1e9) "seconds"))))
 
 (defn release
   "Release Cljs src for production (advanced compilation)"
@@ -68,7 +66,7 @@
   (let [start (System/nanoTime)]
     (b/build "src"
              {:output-to "dist/app.min.js"
-              :output-dir "target"
+              :output-dir "out"
               :optimizations :advanced
               :verbose true})
     (println "... done. Elapsed" (/ (- (System/nanoTime) start) 1e9) "seconds")))
@@ -79,7 +77,7 @@
   (println "Starting Node REPL ...")
   (repl/repl* (node/repl-env)
               {:watch "src"
-               :output-dir "target"}))
+               :output-dir "out"}))
 
 (defn start-rhino-repl
   "Start a Rhino Repl"
@@ -87,7 +85,7 @@
   (println "Starting Rhino REPL ...")
   (repl/repl* (rhino/repl-env)
              {:watch "src"
-              :output-dir "target"
+              :output-dir "out"
               :optimizations :none
               :cache-analysis true
               :source-map true}))
@@ -95,7 +93,7 @@
 (defn start-brepl [& options]
   (println "Starting Browser REPL ...")
   (repl/repl* (browser/repl-env)
-              {:output-dir "target"
+              {:output-dir "out"
                :optimizations :none
                :cache-analysis true
                :source-map true}))
@@ -110,3 +108,9 @@
 
 (defn show-classpath []
   (dp/classpath-urls (clojure.lang.DynamicClassLoader.)))
+
+(defn -main
+  "If invoked on the CLI, compile cljs and start a build and Clojure repl"
+  [args]
+  (compile-cljs-src)
+  (build args))
