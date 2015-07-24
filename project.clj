@@ -1,6 +1,8 @@
 (defproject priyatam/replify "0.2.2"
   :description "A minimalist Clojurescript repl and build system"
   :url "https://github.com/priyatam/replify"
+  :scm {:name "git" :url "https://github.com/priyatam/replify"}
+  :license {:name "Eclipse Public License" :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.7.0" :scope "provided"]
                  [org.clojure/clojurescript "0.0-3367" :scope "provided"]
                  [alembic "0.3.2"]]
