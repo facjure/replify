@@ -4,7 +4,10 @@
             [cljs.repl.node :as node]
             [cljs.repl.browser :as browser]
             [cljs.repl.rhino :as rhino]
-            [alembic.still :as still])
+            [alembic.still :as still]
+            [dynapath.util :as dp])
+  (:import clojure.lang.DynamicClassLoader
+           (java.net URL URLClassLoader))
   (:gen-class))
 
 (defn compile-cljs
@@ -52,7 +55,7 @@
      (println "setting main as: " main)
      (b/build "src"
               {:main main
-               :output-to "app.js"
+               :output-to "target/app-node.js"
                :target :nodejs})
      (println "... done. Elapsed" (/ (- (System/nanoTime) start) 1e9) "seconds")
      (future
@@ -99,6 +102,14 @@
 
 (defn add-deps [deps]
   (alembic.still/distill deps))
+
+(defn add-path [src]
+  (let [cl (clojure.lang.DynamicClassLoader.)
+        url (java.net.URL. (str "file://" src))]
+    (dp/add-classpath-url cl url)))
+
+(defn show-classpath []
+  (dp/classpath-urls (clojure.lang.DynamicClassLoader.)))
 
 (defn -main
   "If invoked on the CLI, compile cljs and start a node repl"
