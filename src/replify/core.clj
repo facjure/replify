@@ -10,7 +10,7 @@
            (java.net URL URLClassLoader))
   (:gen-class))
 
-(defn compile-cljs
+(defn compile-cljs-source
   "Compile Cljs compiler for faster src compilations"
   []
   (do
@@ -110,10 +110,3 @@
 
 (defn show-classpath []
   (dp/classpath-urls (clojure.lang.DynamicClassLoader.)))
-
-(defn -main
-  "If invoked on the CLI, compile cljs and start a node repl"
-  [args]
-  (compile-cljs)
-  (build args)
-  (start-node-repl))
