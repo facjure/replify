@@ -1,6 +1,7 @@
 (ns hello.core
-  (:require [replify.browser :as browser]
-            [replify.node :as node]))
+  (:require [cljs.nodejs :as nodejs]))
+
+(nodejs/enable-util-print!)
 
 (defn greet [name]
   (println (str "Hello, " name)))
@@ -8,6 +9,5 @@
 (defn -main [& args]
   (greet "NodeJs REPl!"))
 
-(node-init)
-
 (set! *main-cli-fn* -main)
+
