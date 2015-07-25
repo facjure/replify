@@ -1,5 +1,6 @@
 (ns replify.core
-  (:require [cljs.build.api :as b]
+  (:require [clojure.tools.cli :refer [parse-opts]]
+            [cljs.build.api :as b]
             [cljs.repl :as repl]
             [cljs.repl.node :as node]
             [cljs.repl.browser :as browser]
