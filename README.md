@@ -2,34 +2,68 @@ Replify
 =======
 
 A _fast_ Clojurescript REPL with a minimalist build tool. Available as a standalone
-jar for rapid prototyping without leaving the REPL.
-	
+jar for rapid prototyping.
+
 ## Rationale
 
-According to 2014
-[state of Clojurescript](https://cognitect.wufoo.com/reports/state-of-clojurescript-2014-results/)
-survey, 97% of developers are targeting browser environment, yet 64% report
-difficulty in setting up a repl/brepl/nrepl. Some use a combination of
-outdated nrepl middlewares,
-[stacked together](https://github.com/plexus/chestnut/blob/master/src/leiningen/new/chestnut/project.clj)
-in slow, nested maps. None of them use the
-[new](http://swannodette.github.io/2014/12/29/nodejs-of-my-dreams/), blazing
-[fast](http://swannodette.github.io/2015/01/02/the-essence-of-clojurescript-redux/) (~10x)
-repls built into Clojurescript.
+> Why learn another build tool when you can code on the REPL?
 
-Replify exposes built-in Cljs repls (**Browser**, **Rhino**,
-**Nashorn**, and **Node**) with a minimal workflow, and runtime classpath
-and dependency management via [alembic[(https://github.com/pallet/alembic).
+The [new](http://swannodette.github.io/2014/12/29/nodejs-of-my-dreams/), blazing
+[fast](http://swannodette.github.io/2015/01/02/the-essence-of-clojurescript-redux/)
+(~10x) **Browser**, **Rhino**, **Nashorn**, and **Node** repls are bundled in
+Clojurescript. This library lets you run and write build tasks as plain old
+functions on the repl.  In addition it also provides utilties to manage runtime
+classpath and dependencies via [alembic](https://github.com/pallet/alembic).
 
 ## Quickstart
 
-Install [Java8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html). Clone this repo, and start a standalone repl that bundles clj, cljs, and replify.
+Install
+[Java8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html). Download
+[replify](https://github.com/priyatam/replify/releases/download/v0.2.2/replify.jar)
+as a standalone jar.
 
-	lein uberjar
-	rlwrap java -cp src -jar target/replify.jar
+Start a REPL
+
+	rlwrap java -cp src -jar replify.jar
 	user=> (use 'replify.core)
-	
-However, most times you want to manage dependencies and reuse plugins from [leiningen](http://leiningen.org).
+
+Install sourcemaps for nodejs
+
+	npm install source-map-support
+
+## Tasks
+
+All tasks assume source files are under `src`.
+
+```clojure
+user=> (build 'foobar.core)
+user=> (build-for-node 'foobar.core)
+user=> (start-node-repl)
+user=> (start-rhino-repl)
+user=> (start-brepl)
+user=> (add-deps '[org.omcljs/om "0.9.0"])
+user=> (add-deps '[[org.omcljs/om "0.9.0"] [sablono "0.3.4"] [facjure/mesh "0.3.0"]])
+user=> (release 'hello.core)
+```
+
+For browser REPLs: Create an index.html at the project root and include `(:require [replify.core :as repl])` in your main source file.
+
+```html
+<html>
+	<body>
+      <script src="target/app.js" type="text/javascript"></script>
+      <div id="app"> </div>
+    </body>
+</html>
+```
+
+Refresh browser at `localhost:9000` for brepl to connect to it. 
+
+For more info, read [evaluation environment](https://github.com/clojure/clojurescript/wiki/The-REPL-and-Evaluation-Environments#browser-as-evaluation-environment).
+
+## With Leiningen
+
+You can stil use  [leiningen](http://leiningen.org) to manage dependencies and plugins.
 
 Create a default lein template:
 
@@ -62,55 +96,23 @@ Start a Clojure REPL (to run replify tasks)
 	rlwrap lein trampoline repl
 	user=> (use 'replify.core)
 
-## Tasks
+## With Figwheel/Boot
 
-```clojure
-user=> (build 'foobar.core)
-user=> (build-for-node 'foobar.core)
-user=> (start-node-repl)
-Starting Node REPL ...
-ClojureScript Node.js REPL server listening on 54240
-	
-user=> (start-rhino-repl)
-Starting Rhino REPL ...
-ClojureScript Node.js REPL server listening on 56767
-	
-user=> (start-brepl)
-Starting Browser REPL ...
-Compiling client jsFor a browser repl,  ...
-Waiting for browser to connect ...
-
-user=>(add-deps '[org.omcljs/om "0.9.0"])
-user=>(add-deps '[[org.omcljs/om "0.9.0"] [sablono "0.3.4"] [facjure/mesh "0.3.0"]])
-Loaded dependencies:
-
-user=> (release 'hello.core)
-```
-
-Note on Browser REPL: Create an index.html at the project root and include `(:require [replify.core :as repl])` in your main source file.
-
-```html
-<html>
-	<body>
-      <script src="target/app.js" type="text/javascript"></script>
-      <div id="app"> </div>
-    </body>
-</html>
-```
-
-Refresh browser for brepl to connect to browser at `localhost:9000`.
-
-For more info, read [evaluation environment](https://github.com/clojure/clojurescript/wiki/The-REPL-and-Evaluation-Environments#browser-as-evaluation-environment).
-
-## Next Steps
-
-Replify is aimed at prototyping and ad-hoc tasks on the CLI. For larger projects
-use [Figwheel](https://github.com/bhauman/lein-figwheel) or
+Replify is aimed at prototyping on the CLI. For larger projects use
+[Figwheel](https://github.com/bhauman/lein-figwheel) or
 [Boot](https://github.com/adzerk-oss/boot-cljs).
 
-## Credits
+## History & Credits
 
-- Clojurescript [wiki](https://github.com/clojure/clojurescript/wiki/Running-REPLs)
+According to 2014
+[state of Clojurescript](https://cognitect.wufoo.com/reports/state-of-clojurescript-2014-results/)
+survey, 97% of developers are targeting browser environment, yet 64% report
+difficulty in setting up a repl/brepl/nrepl. Some use a combination of
+outdated nrepl middlewares,
+[stacked together](https://github.com/plexus/chestnut/blob/master/src/leiningen/new/chestnut/project.clj)
+in slow, nested maps.
+
+For more info read Clojurescript [wiki](https://github.com/clojure/clojurescript/wiki/Running-REPLs).
 
 ## Status
 
