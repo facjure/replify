@@ -1,4 +1,4 @@
-(def +version+ "0.1.0")
+(def +version+ "0.2.3")
 
 (task-options!
   pom {:project     'replify
@@ -32,11 +32,18 @@
 
 (bootlaces! +version+)
 
+(deftask build []
+  (comp
+   (pom :project 'replify
+        :version +version+)
+   (uber)
+   (jar)))
+
 (defn docs-env! []
   (merge-env!
     :source-paths #{"docs"}
     :resource-paths #{"docs"}
-    :dependencies '[[org.clojure/core.match "0.3.0-alpha4"]]))
+    :dependencies '[]))
 
 (deftask docs []
   (docs-env!)

@@ -1,5 +1,6 @@
 (ns replify.core
-  (:require [clojure.tools.cli :refer [parse-opts]]
+  (:require [clojure.main :as main]
+            [clojure.tools.cli :refer [parse-opts]]
             [cljs.build.api :as b]
             [cljs.repl :as repl]
             [cljs.repl.node :as node]
@@ -8,8 +9,7 @@
             [alembic.still :as still]
             [dynapath.util :as dp])
   (:import clojure.lang.DynamicClassLoader
-           (java.net URL URLClassLoader))
-  (:gen-class))
+           (java.net URL URLClassLoader)))
 
 (defn compile-cljs-src
   "Compile Cljs compiler for faster src compilations"
@@ -110,8 +110,5 @@
 (defn show-classpath []
   (dp/classpath-urls (clojure.lang.DynamicClassLoader.)))
 
-(defn -main
-  "If invoked on the CLI, compile cljs and start a build and Clojure repl"
-  [args]
-  (compile-cljs-src)
-  (build args))
+(defn deps-tree []
+  (still/lein deps :tree))
