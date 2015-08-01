@@ -1,8 +1,7 @@
 Replify
 =======
 
-A _fast_ Clojurescript REPL with a minimalist build tool. Available as a standalone
-jar for rapid prototyping.
+A _fast_ Clojure/Clojurescript REPL and a minimalist build tool in a jar.
 
 ## Rationale
 
@@ -12,19 +11,19 @@ The [new](http://swannodette.github.io/2014/12/29/nodejs-of-my-dreams/), blazing
 [fast](http://swannodette.github.io/2015/01/02/the-essence-of-clojurescript-redux/)
 (~10x) **Browser**, **Rhino**, **Nashorn**, and **Node** repls are bundled in
 Clojurescript. This library lets you run and write build tasks as plain old
-functions on the repl.  In addition it also provides utilties to manage runtime
-classpath and dependencies via [alembic](https://github.com/pallet/alembic).
+functions on the repl. In addition it also provides utilties to manage runtime
+classpath and dynamic [dependencies](https://github.com/pallet/alembic) and classpath.
 
 ## Quickstart
 
 Install
 [Java8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html). Download
-[replify](https://github.com/priyatam/replify/releases/download/v0.2.2/replify.jar)
-as a standalone jar.
+[cljs](https://github.com/clojure/clojurescript/releases/download/r1.7.28/cljs.jar).
 
 Start a REPL
 
-	rlwrap java -cp src -jar replify.jar
+	rlwrap java -cp cljs.jar:src clojure.main
+	user=> (add-dep [priyatam/replify "0.2.4"])
 	user=> (use 'replify.core)
 
 Install sourcemaps for nodejs
@@ -61,44 +60,9 @@ Refresh browser at `localhost:9000` for brepl to connect to it.
 
 For more info, read [evaluation environment](https://github.com/clojure/clojurescript/wiki/The-REPL-and-Evaluation-Environments#browser-as-evaluation-environment).
 
-## With Leiningen
-
-You can stil use  [leiningen](http://leiningen.org) to manage dependencies and plugins.
-
-Create a default lein template:
-
-	lein new hello
-
-Update clj, cljs versions and add node and deps in project.clj:
-
-```clojure
-(defproject hello "0.1.0"
-	:description "FIXME: write description"
-	:url "http://example.com/FIXME"
-	:license {:name "Eclipse Public License" :url "http://www.eclipse.org/legal/epl-v10.html"}
-	:jvm-opts ^:replace ["-Xms512m" "-server"]
-	:source-paths ["src" "target/classes"]
-	:clean-targets ["out" "release"]
-	:target-path "target"
-	:dependencies [[org.clojure/clojure "1.7.0"]
-    [org.clojure/clojurescript "0.0-3308"]]
-	:node-dependencies [[source-map-support "0.3.1"]]
-	:profiles {:dev {:dependencies [[priyatam/replify "0.2.2"]]}}
-	:plugins [[lein-npm "0.5.0"]])
-```
-	
-Add source map support for Node REPL
-
-	lein npm install
-
-Start a Clojure REPL (to run replify tasks)
-
-	rlwrap lein trampoline repl
-	user=> (use 'replify.core)
-
 ## With Figwheel/Boot
 
-Replify is aimed at prototyping on the CLI. For larger projects use
+Replify is aimed at prototyping on the CLI. For projects with complex build tasks, use
 [Figwheel](https://github.com/bhauman/lein-figwheel) or
 [Boot](https://github.com/adzerk-oss/boot-cljs).
 
