@@ -32,32 +32,23 @@
 
 (bootlaces! +version+)
 
-(deftask build []
+(deftask dev []
+  (comp (serve :dir ".")
+        (watch)
+        (cljs-repl)
+        (cljs :optimizations :none
+              :source-map    true
+              :unified-mode  true)))
+
+(deftask prod []
+  (cljs :optimizations :advanced))
+
+(deftask uberjar []
   (comp
    (pom :project 'replify
         :version +version+)
    (uber)
    (jar)))
 
-(defn docs-env! []
-  (merge-env!
-    :source-paths #{"docs"}
-    :resource-paths #{"docs"}
-    :dependencies '[]))
-
-(deftask docs []
-  (docs-env!)
-  (comp (serve :dir ".")
-        (watch)
-        (reload :on-jsload 'combo-demo.core/main)
-        (cljs-repl)
-        (cljs :optimizations :none
-              :source-map    true
-              :unified-mode  true)))
-
-(deftask clojars-release []
+(deftask deploy []
   (comp (build-jar) (push-release)))
-
-(deftask gh-pages []
-  (docs-env!)
-  (cljs :optimizations :advanced))
