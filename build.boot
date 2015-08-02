@@ -51,4 +51,4 @@
    (jar)))
 
 (deftask deploy []
-  (comp (build-jar) (push-release)))
+  (comp (build-jar) (push-release :ensure-clean false)))
