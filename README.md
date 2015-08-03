@@ -23,8 +23,7 @@ Install
 
 Start a REPL
 
-	rlwrap java -cp cljs.jar:src clojure.main
-	user=> (add-dep [priyatam/replify "0.2.4"])
+	rlwrap java -cp replify.jar:src clojure.main
 	user=> (use 'replify.core)
 	       (start-node-repl)
 	
@@ -78,7 +77,7 @@ Add dynamic dependencies
 => (add-deps '[org.omcljs/om "0.9.0"])
 => (add-deps '[[org.omcljs/om "0.9.0"] [sablono "0.3.4"] [facjure/mesh "0.3.0"]])
 => (load-cljsjs-deps) ;; load all available cljsjs deps into classpath
-```	
+```
 
 ## With Figwheel/Boot
 
@@ -93,8 +92,7 @@ According to 2014
 survey, 97% of developers are targeting browser environment, yet 64% report
 difficulty in setting up a repl/brepl/nrepl. Some use a combination of
 outdated nrepl middlewares,
-[stacked together](https://github.com/plexus/chestnut/blob/master/src/leiningen/new/chestnut/project.clj)
-in slow, nested maps.
+[stacked together](https://github.com/plexus/chestnut/blob/master/src/leiningen/new/chestnut/project.clj).
 
 For more info read Clojurescript [wiki](https://github.com/clojure/clojurescript/wiki/Running-REPLs).
 
