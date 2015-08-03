@@ -7,7 +7,8 @@
             [cljs.repl.browser :as browser]
             [cljs.repl.rhino :as rhino]
             [alembic.still :as still]
-            [dynapath.util :as dp])
+            [dynapath.util :as dp]
+            [replify.deps :refer [load-cljsjs-deps]])
   (:import clojure.lang.DynamicClassLoader
            (java.net URL URLClassLoader)))
 
