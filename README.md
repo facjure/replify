@@ -19,7 +19,7 @@ dependencies using [alembic](https://github.com/pallet/alembic).
 
 Install
 [Java8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html). Download
-[replify.jar](https://github.com/priyatam/replify/releases/download/v0.2.3/replify.jar).
+[replify.jar](https://github.com/priyatam/replify/releases/download/v0.2.4/replify.jar).
 
 Start a REPL
 
@@ -67,7 +67,7 @@ To manage dependencies, create a `project.clj` in the current directory. Replify
     :plugins [[lein-npm "0.5.0"]]
     :source-paths ["src" "target/classes"]
     :clean-targets ["out" "release"]
-    :profiles {:dev {:dependencies [[priyatam/replify "0.2.3"]]}}
+    :profiles {:dev {:dependencies [[priyatam/replify "0.2.4"]]}}
     :target-path "target")
 ```
 
