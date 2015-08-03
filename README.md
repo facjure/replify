@@ -1,7 +1,7 @@
 Replify
 =======
 
-A _fast_ Clojure/Clojurescript REPL and a minimalist build tool in a jar.
+A _fast_ Clojure/Clojurescript REPL and a minimalist build tool, as a standalone jar.
 
 ## Rationale
 
@@ -10,26 +10,24 @@ A _fast_ Clojure/Clojurescript REPL and a minimalist build tool in a jar.
 The [new](http://swannodette.github.io/2014/12/29/nodejs-of-my-dreams/), blazing
 [fast](http://swannodette.github.io/2015/01/02/the-essence-of-clojurescript-redux/)
 (~10x) **Browser**, **Rhino**, **Nashorn**, and **Node** repls are bundled in
-Clojurescript. This library lets you run and write build tasks as plain old
-functions on the repl. In addition it also provides utilties to manage runtime
-classpath and dynamic [dependencies](https://github.com/pallet/alembic) and classpath.
+Clojurescript. This library exposes these build tasks as plain old functions on
+the repl. In addition it maintains compatibility with leiningen project maps, and
+provides utilties to manage runtime classpath and dynamic
+dependencies using [alembic](https://github.com/pallet/alembic).
 
 ## Quickstart
 
 Install
 [Java8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html). Download
-[cljs](https://github.com/clojure/clojurescript/releases/download/r1.7.28/cljs.jar).
+[replify.jar](https://github.com/priyatam/replify/releases/download/v0.2.3/replify.jar).
 
 Start a REPL
 
 	rlwrap java -cp cljs.jar:src clojure.main
 	user=> (add-dep [priyatam/replify "0.2.4"])
 	user=> (use 'replify.core)
-
-Install sourcemaps for nodejs
-
-	npm install source-map-support
-
+	       (start-node-repl)
+	
 ## Tasks
 
 All tasks assume source files are under `src`.
@@ -37,11 +35,10 @@ All tasks assume source files are under `src`.
 ```clojure
 user=> (build 'foobar.core)
 user=> (build-for-node 'foobar.core)
+... node out/app.js
 user=> (start-node-repl)
 user=> (start-rhino-repl)
 user=> (start-brepl)
-user=> (add-deps '[org.omcljs/om "0.9.0"])
-user=> (add-deps '[[org.omcljs/om "0.9.0"] [sablono "0.3.4"] [facjure/mesh "0.3.0"]])
 user=> (release 'hello.core)
 ```
 
@@ -56,9 +53,32 @@ For browser REPLs: Create an index.html at the project root and include `(:requi
 </html>
 ```
 
-Refresh browser at `localhost:9000` for brepl to connect to it. 
+Refresh browser at `localhost:9000` for brepl to connect. 
 
-For more info, read [evaluation environment](https://github.com/clojure/clojurescript/wiki/The-REPL-and-Evaluation-Environments#browser-as-evaluation-environment).
+To manage dependencies, create a `project.clj` in the current directory. Replify wraps [leiningen](http://leiningen.org), but you don't have to install it. 
+
+```clojure
+(defproject FIXME "0.1.0"
+    :description "FIXME"
+    :url "https://github.com/FIXME"
+    :dependencies [[org.clojure/clojure "1.7.0"]
+                   [org.clojure/clojurescript "1.7.28"]]
+    :jvm-opts ^:replace ["-Xms512m" "-server"]
+    :node-dependencies [[source-map-support "0.3.1"]]
+    :plugins [[lein-npm "0.5.0"]]
+    :source-paths ["src" "target/classes"]
+    :clean-targets ["out" "release"]
+    :profiles {:dev {:dependencies [[priyatam/replify "0.2.3"]]}}
+    :target-path "target")
+```
+
+Add dynamic dependencies
+
+```clojure
+=> (add-deps '[org.omcljs/om "0.9.0"])
+=> (add-deps '[[org.omcljs/om "0.9.0"] [sablono "0.3.4"] [facjure/mesh "0.3.0"]])
+=> (load-cljsjs-deps) ;; load all available cljsjs deps into classpath
+```	
 
 ## With Figwheel/Boot
 
