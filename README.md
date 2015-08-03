@@ -34,7 +34,7 @@ All tasks assume source files are under `src`.
 ```clojure
 user=> (build 'foobar.core)
 user=> (build-for-node 'foobar.core)
-... node out/app.js
+... node main.js
 user=> (start-node-repl)
 user=> (start-rhino-repl)
 user=> (start-brepl)

@@ -2,8 +2,7 @@
   (:require
    [alembic.still :as still]
    [clojure.java.io :as io]
-   [clojure.edn :as edn]
-   [clostache.parser :as tmpl]))
+   [clojure.edn :as edn]))
 
 (defn load-edn [f io-type]
   (case io-type
