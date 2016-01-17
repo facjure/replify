@@ -1,0 +1,7 @@
+#!/bin/sh
+
+lein uberjar
+cp target/replify.jar example
+cd example
+rlwrap java -jar replify.jar
+
