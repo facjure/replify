@@ -10,3 +10,6 @@ pom.xml.asc
 .lein-*
 .nrepl*
 .repl*
+main.js
+target/*
+example/replify.jar
