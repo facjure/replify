@@ -3,5 +3,4 @@
 lein uberjar
 cp target/replify.jar example
 cd example
-rlwrap java -jar replify.jar
-
+rlwrap java -cp 'replify.jar:src' clojure.main
