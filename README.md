@@ -1,7 +1,7 @@
 Replify
 =======
 
-A _fast_ Clojure/Clojurescript REPL and a minimalist build tool, as a standalone jar.
+A _fast_ Clojure/Cljs REPL and a minimalist build tool, as a standalone jar.
 
 ## Rationale
 
@@ -19,17 +19,16 @@ dependencies using [alembic](https://github.com/pallet/alembic).
 
 Install
 [Java8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html). Download
-[replify.jar](https://github.com/priyatam/replify/releases/download/v0.2.4/replify.jar).
+[replify.jar](https://github.com/priyatam/replify/releases/download/v0.2.4/replify.jar). Start a REPL.
 
-Start a REPL
-
-	rlwrap java -cp replify.jar:src clojure.main
+	rlwrap java -cp 'replify.jar:src' clojure.main
 	user=> (use 'replify.core)
-	       (start-node-repl)
+
+This gives you a Clojure REPL from which you perform frequently used Cljs tasks.
 	
 ## Tasks
 
-All tasks assume source files are under `src`.
+All tasks assume your current cljs/cljc source files are under `src`.
 
 ```clojure
 user=> (build 'foobar.core)
@@ -54,7 +53,8 @@ For browser REPLs: Create an index.html at the project root and include `(:requi
 
 Refresh browser at `localhost:9000` for brepl to connect. 
 
-To manage dependencies, create a `project.clj` in the current directory. Replify wraps [leiningen](http://leiningen.org), but you don't have to install it. 
+To manage dependencies, create a `project.clj` in the current directory. Replify
+wraps [leiningen](http://leiningen.org), but you don't have to install it.
 
 ```clojure
 (defproject FIXME "0.1.0"
@@ -62,12 +62,12 @@ To manage dependencies, create a `project.clj` in the current directory. Replify
     :url "https://github.com/FIXME"
     :dependencies [[org.clojure/clojure "1.7.0"]
                    [org.clojure/clojurescript "1.7.28"]]
-    :jvm-opts ^:replace ["-Xms512m" "-server"]
+    :jvm-opts ^:replace ["-Xmx512m" "-server"]
     :node-dependencies [[source-map-support "0.3.1"]]
     :plugins [[lein-npm "0.5.0"]]
     :source-paths ["src" "target/classes"]
     :clean-targets ["out" "release"]
-    :profiles {:dev {:dependencies [[priyatam/replify "0.2.4"]]}}
+    :profiles {:dev {:dependencies [[facjure/replify "0.3.0"]]}}
     :target-path "target")
 ```
 
@@ -81,7 +81,7 @@ Add dynamic dependencies
 
 ## With Figwheel/Boot
 
-Replify is aimed at prototyping on the CLI. For projects with complex build tasks, use
+Replify is aimed at prototyping on the CLI. For projects with 'complex' build tasks, use
 [Figwheel](https://github.com/bhauman/lein-figwheel) or
 [Boot](https://github.com/adzerk-oss/boot-cljs).
 
@@ -94,15 +94,14 @@ difficulty in setting up a repl/brepl/nrepl. Some use a combination of
 outdated nrepl middlewares,
 [stacked together](https://github.com/plexus/chestnut/blob/master/src/leiningen/new/chestnut/project.clj).
 
-For more info read Clojurescript [wiki](https://github.com/clojure/clojurescript/wiki/Running-REPLs).
+For more info read Clojurescript [wiki](https://github.com/clojure/clojurescript/wiki/Quick-Start).
 
 ## Status
 
-[![Clojars Project](http://clojars.org/priyatam/replify/latest-version.svg)](http://clojars.org/priyatam/replify)
+[![Clojars Project](http://clojars.org/facjure/replify/latest-version.svg)](http://clojars.org/facjure/replify)
 
 ## License
 
-Copyright © 2015, Priyatam Mudivarti.
+Copyright © 2016 Facjure, LLC.
 
 Distributed under the Eclipse Public License either version 1.0 or (at your option) any later version.
-	
