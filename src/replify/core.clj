@@ -1,61 +1,63 @@
 (ns replify.core
-  (:require [clojure.main :as main]
-            [clojure.tools.cli :refer [parse-opts]]
-            [cljs.build.api :as b]
-            [cljs.repl :as repl]
-            [cljs.repl.node :as node]
-            [cljs.repl.browser :as browser]
-            [cljs.repl.rhino :as rhino]
-            [alembic.still :as still]
-            [dynapath.util :as dp]
-            [replify.deps :refer [load-cljsjs-deps]])
-  (:import clojure.lang.DynamicClassLoader
-           (java.net URL URLClassLoader)))
+  (:require
+   [clojure.main :as main]
+   [clojure.java.io :as io]
+   [clojure.tools.cli :refer [parse-opts]]
+   [cljs.compiler :as compiler]
+   [cljs.closure :as closure]
+   [cljs.build.api :as api]
+   [cljs.repl :as repl]
+   [cljs.repl.node :as node]
+   [cljs.repl.browser :as browser]
+   [cljs.repl.rhino :as rhino]
+   [alembic.still :as still]
+   [dynapath.util :as dp]
+   [replify.deps :refer [load-cljsjs-deps]])
+  (:import
+   clojure.lang.DynamicClassLoader
+   (java.net URL URLClassLoader)))
 
 (defn compile-cljs-src
-  "Compile Cljs compiler for faster src compilations"
+  "Compile Cljs compiler for faster source compilations"
   []
-  (do
-    (compile 'cljs.core)
-    (compile 'cljs.repl.node)
-    (compile 'cljs.repl.browser)))
-
-(defn watch
-  "Watch for Cljs src changes"
-  [main & options]
-  (println "Watching for changes ...")
-  (b/watch "src"
-           {:main main
-            :output-to "out/app.js"
-            :output-dir "out"
-            :optimizations :none
-            :cache-analysis true
-            :source-map true}))
+  (compile 'cljs.core)
+  (compile 'cljs.repl.node)
+  (compile 'cljs.repl.browser))
 
 (defn build
   ([main & options]
    "Build Cljs src with options"
-   (println "Building Cljs and watching for changes ...")
+   (println "Building Cljs")
    (let [start (System/nanoTime)]
      (println "setting main as: " main)
-     (b/build "src"
+     (api/build "src"
               {:main main
                :output-to "out/app.js"
                :output-dir "out"
                :optimizations :none
                :source-map true
                :verbose true})
-     (println "... done. Elapsed" (/ (- (System/nanoTime) start) 1e9) "seconds")
-     (future
-       (watch main)))))
+     (println "... done. Elapsed" (/ (- (System/nanoTime) start) 1e9) "seconds"))))
 
-(defn build-for-node
+(defn watch
+  "Watch for Cljs src changes"
+  [main & options]
+  (println "Watching for changes ...")
+  (api/watch "src"
+             {:main main
+            :output-to "out/app.js"
+            :output-dir "out"
+            :optimizations :none
+            :cache-analysis true
+            :source-map true}))
+
+(defn build-on-node
   ([main & options]
    "Build Cljs src for Nodejs with options"
    (println "Building Cljs for Node and watching for changes ...")
    (let [start (System/nanoTime)]
      (println "setting main as: " main)
-     (b/build "src"
+     (api/build "src"
               {:main main
                :output-to "main.js"
                :target :nodejs})
@@ -66,7 +68,7 @@
   [& options]
   (println "Building 'Release' ...")
   (let [start (System/nanoTime)]
-    (b/build "src"
+    (api/build "src"
              {:output-to "dist/app.min.js"
               :output-dir "out"
               :optimizations :advanced
@@ -74,7 +76,6 @@
     (println "... done. Elapsed" (/ (- (System/nanoTime) start) 1e9) "seconds")))
 
 (defn start-node-repl
-  "Start a Node Repl"
   [& options]
   (println "Starting Node REPL ...")
   (repl/repl* (node/repl-env)
@@ -100,6 +101,12 @@
                :cache-analysis true
                :source-map true}))
 
+(defn- run [task]
+  (still/lein run -m task))
+
+(defn node-repl [main]
+  (run (replify.core/start-node-repl main)))
+
 (defn add-deps [deps]
   (alembic.still/distill deps))
 
@@ -110,6 +117,3 @@
 
 (defn show-classpath []
   (dp/classpath-urls (clojure.lang.DynamicClassLoader.)))
-
-(defn deps-tree []
-  (still/lein deps :tree))
