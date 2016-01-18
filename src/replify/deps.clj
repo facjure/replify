@@ -2,7 +2,11 @@
   (:require
    [alembic.still :as still]
    [clojure.java.io :as io]
-   [clojure.edn :as edn]))
+   [clojure.edn :as edn]
+   [dynapath.util :as dp])
+  (:import
+   clojure.lang.DynamicClassLoader
+   (java.net URL URLClassLoader)))
 
 (defn load-edn [f io-type]
   (case io-type
@@ -20,4 +24,13 @@
       (map #(still/distill %) (:dependencies conf))
       (still/lein npm install))))
 
+(defn add-deps [deps]
+  (alembic.still/distill deps))
 
+(defn add-path [src]
+  (let [cl (clojure.lang.DynamicClassLoader.)
+        url (java.net.URL. (str "file://" src))]
+    (dp/add-classpath-url cl url)))
+
+(defn show-classpath []
+  (dp/classpath-urls (clojure.lang.DynamicClassLoader.)))

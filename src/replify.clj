@@ -1,4 +1,4 @@
-(ns replify.core
+(ns replify
   (:require
    [clojure.main :as main]
    [clojure.java.io :as io]
@@ -9,13 +9,7 @@
    [cljs.repl :as repl]
    [cljs.repl.node :as node]
    [cljs.repl.browser :as browser]
-   [cljs.repl.rhino :as rhino]
-   [alembic.still :as still]
-   [dynapath.util :as dp]
-   [replify.deps :refer [load-cljsjs-deps]])
-  (:import
-   clojure.lang.DynamicClassLoader
-   (java.net URL URLClassLoader)))
+   [cljs.repl.rhino :as rhino]))
 
 (defn compile-cljs-src
   "Compile Cljs compiler for faster source compilations"
@@ -23,6 +17,18 @@
   (compile 'cljs.core)
   (compile 'cljs.repl.node)
   (compile 'cljs.repl.browser))
+
+(defn watch
+  "Watch for Cljs src changes"
+  [main & options]
+  (println "Watching for changes ...")
+  (api/watch "src"
+             {:main main
+              :output-to "out/app.js"
+              :output-dir "out"
+              :optimizations :none
+              :cache-analysis true
+              :source-map true}))
 
 (defn build
   ([main & options]
@@ -37,19 +43,8 @@
                :optimizations :none
                :source-map true
                :verbose true})
-     (println "... done. Elapsed" (/ (- (System/nanoTime) start) 1e9) "seconds"))))
-
-(defn watch
-  "Watch for Cljs src changes"
-  [main & options]
-  (println "Watching for changes ...")
-  (api/watch "src"
-             {:main main
-            :output-to "out/app.js"
-            :output-dir "out"
-            :optimizations :none
-            :cache-analysis true
-            :source-map true}))
+     (println "... done. Elapsed" (/ (- (System/nanoTime) start) 1e9) "seconds")
+     (future (watch main)))))
 
 (defn build-on-node
   ([main & options]
@@ -101,19 +96,3 @@
                :cache-analysis true
                :source-map true}))
 
-(defn- run [task]
-  (still/lein run -m task))
-
-(defn node-repl [main]
-  (run (replify.core/start-node-repl main)))
-
-(defn add-deps [deps]
-  (alembic.still/distill deps))
-
-(defn add-path [src]
-  (let [cl (clojure.lang.DynamicClassLoader.)
-        url (java.net.URL. (str "file://" src))]
-    (dp/add-classpath-url cl url)))
-
-(defn show-classpath []
-  (dp/classpath-urls (clojure.lang.DynamicClassLoader.)))
