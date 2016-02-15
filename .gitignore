@@ -13,3 +13,4 @@ pom.xml.asc
 main.js
 target/*
 example/replify.jar
+figwheel_*
