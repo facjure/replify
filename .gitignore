@@ -14,3 +14,4 @@ main.js
 target/*
 example/replify.jar
 figwheel_*
+.tmp
