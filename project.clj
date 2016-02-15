@@ -1,4 +1,4 @@
-(defproject facjure/replify "0.3.0"
+(defproject facjure/replify "0.3.1-SNAPSHOT"
   :description "An minimalist Clojurescript repl and build tool"
   :url "https://github.com/facjure/replify"
   :scm {:name "git" :url "https://github.com/facjure/replify"}
