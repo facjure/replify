@@ -9,12 +9,15 @@
                  [org.clojure/tools.cli "0.3.2"]
                  [org.clojure/tools.nrepl "0.2.12"]
                  [me.raynes/fs "1.4.6"]
-                 [leiningen "2.5.3"]
                  [alembic "0.3.2"]
-                 [garden "1.3.0"]]
+                 [figwheel "0.5.0-6"]
+                 [figwheel-sidecar "0.5.0-6"]
+                 [garden "1.3.0"]
+                 [leiningen "2.5.3"]]
   :npm {:dependencies [[source-map-support "0.4.0"]]}
   :plugins [[lein-npm "0.6.1"]
-            [lein-garden "0.2.6"]]
+            [lein-garden "0.2.6"]
+            [lein-figwheel "0.5.0-6"]]
   :source-paths ["src" "target/classes"]
   :clean-targets ["target" "dist"]
   :target-path "target"
