@@ -17,7 +17,7 @@
      (count (line-seq rdr))]))
 
 (defn stats []
-  (let [lines (map #(lc %) (list-files "."))
+  (let [lines (map #(lc %) (ls "."))
         total-lines (reduce + (map second lines))
         pages (let [max (quot total-lines 54)
                     min (quot total-lines 62)]
