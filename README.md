@@ -36,6 +36,7 @@ For lightweight scipts under 'src' add the classpath, like this:
 All tasks assume your current cljs/cljc source files are under `src`.
 
 ```clojure
+user=> (use 'replify.core)
 user=> (build 'foobar.core)
 user=> (build-on-node 'foobar.core)
 ... node main.js
