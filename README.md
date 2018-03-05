@@ -19,7 +19,7 @@ dependencies using [alembic](https://github.com/pallet/alembic).
 
 Assuming you installed
 [Java8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html), rlwrap (optional), and downloaded
-[replify.jar](https://github.com/priyatam/replify/releases/download/v0.4.0/replify.jar), start a REPL:
+[replify.jar](https://github.com/priyatam/replify/releases/download/v0.4.1/replify.jar), start a REPL:
 	
 	rlwrap java -jar replify.jar
 	user=> (use 'replify.core)
@@ -36,6 +36,7 @@ For lightweight scipts under 'src' add the classpath, like this:
 All tasks assume your current cljs/cljc source files are under `src`.
 
 ```clojure
+user=> (use 'replify.core)
 user=> (build 'foobar.core)
 user=> (build-on-node 'foobar.core)
 ... node main.js
